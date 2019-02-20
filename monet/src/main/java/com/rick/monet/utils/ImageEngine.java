@@ -1,0 +1,30 @@
+package com.rick.monet.utils;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.widget.ImageView;
+
+/**
+ * Author: Rick
+ * Email: zhiyuanfeng@rastar.com
+ * Date: 2019/2/19
+ */
+public interface ImageEngine {
+
+    
+     void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) ;
+    
+    void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView,
+                                 Uri uri) ;
+
+    
+    void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) ;
+
+    
+     void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri);
+    void loadImage(Context context, String url, ImageView imageView);
+
+    
+    boolean supportAnimatedGif();
+}

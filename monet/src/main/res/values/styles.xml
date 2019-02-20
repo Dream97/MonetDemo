@@ -1,0 +1,14 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="MonetTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="colorAccent">@color/moent_colorAccent</item>
+        <item name="colorPrimary">@color/moent_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/moent_colorPrimaryDark</item>
+    </style>
+
+</resources>
