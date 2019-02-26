@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="moent_blue">#1296db</color>
-    <color name="moent_colorPrimary">#1296db</color>
-    <color name="moent_colorPrimaryDark">#1296db</color>
-    <color name="moent_colorAccent">#1296db</color>
+    <color name="monet_blue">#1296db</color>
+    <color name="monet_colorPrimary">#1296db</color>
+    <color name="monet_colorPrimaryDark">#1296db</color>
+    <color name="monet_colorAccent">#1296db</color>
+    <color name="monet_white">#FFFFFF</color>
 </resources>

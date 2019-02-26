@@ -8,6 +8,8 @@ import android.widget.Button;
 import com.rick.monet.Monet;
 import com.rick.monet.utils.ImageEngine;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button mBtnOpen;

@@ -37,7 +37,7 @@ public class AlbumLoader extends CursorLoader {
                     + " OR "
                     + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
                     + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-                    + ") GROUP BY (_id";
+                    + ") GROUP BY (bucket_id";
     private static final String[] SELECTION_ARGS = { //参数
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),

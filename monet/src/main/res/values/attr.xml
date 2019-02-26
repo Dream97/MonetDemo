@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MonetTextView">
+        <!--图片大小-->
+        <attr name="Monet_drawableRightWidth" format="dimension"/>
+        <attr name="Monet_drawableRightHeight" format="dimension"/>
+
+        <!-- 设置图片资源 -->
+        <attr name="Monet_drawableTop" format="reference" />
+        <attr name="Monet_drawableBottom" format="reference" />
+        <attr name="Monet_drawableRight" format="reference" />
+        <attr name="Monet_drawableLeft" format="reference" />
+
+        <!--图片位置-->
+        <attr name="Monet_left" format="dimension"/>
+        <attr name="Monet_top" format="dimension"/>
+
+    </declare-styleable>
+</resources>

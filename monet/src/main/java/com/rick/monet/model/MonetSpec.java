@@ -11,6 +11,7 @@ import com.rick.monet.utils.ImageEngine;
 public class MonetSpec {
     private static MonetSpec mMonetSpec;
     private ImageEngine mImageEngine;
+    private int RequestCode;
     private MonetSpec() {
     }
 
@@ -23,6 +24,14 @@ public class MonetSpec {
             }
         }
         return mMonetSpec;
+    }
+
+    public int getRequestCode() {
+        return RequestCode;
+    }
+
+    public void setRequestCode(int requestCode) {
+        RequestCode = requestCode;
     }
 
     public ImageEngine getmImageEngine() {

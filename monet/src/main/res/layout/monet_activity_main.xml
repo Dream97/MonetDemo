@@ -2,20 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    xmlns:monet="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/moent_blue"
-        />
-        <com.rick.monet.ui.widget.MonetGridView
-            android:id="@+id/monet_gv_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:numColumns="auto_fit"
-            android:verticalSpacing="5dp"
-            android:horizontalSpacing="5dp"
+        android:orientation="horizontal"
+        android:background="@color/monet_colorPrimary"
+        >
+
+        <ImageView
+            android:id="@+id/monet_iv_main_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@mipmap/ic_left_white"
+            android:padding="13dp"
+            android:clickable="true"
             />
+
+        <com.rick.monet.ui.widget.BucketNameTextView
+            android:id="@+id/monet_tv_main_bucket_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="全部"
+            android:gravity="center_vertical"
+            android:textColor="@color/monet_white"
+            android:textSize="20sp"
+            monet:Monet_drawableRight="@mipmap/ic_arrow_drop_down_white_24dp"
+            monet:Monet_drawableRightHeight="12dp"
+            monet:Monet_drawableRightWidth="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <com.rick.monet.ui.widget.MonetGridView
+        android:id="@+id/monet_gv_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="5dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="5dp"
+        android:visibility="gone"
+        />
 </LinearLayout>

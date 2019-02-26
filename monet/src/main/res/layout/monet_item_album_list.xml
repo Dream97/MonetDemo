@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/monet_album_item_height">
+
+    <com.rick.monet.ui.widget.MonetImage
+        android:id="@+id/monet_iv_item_cover"
+        android:layout_width="@dimen/monet_album_item_cover_width"
+        android:layout_height="@dimen/monet_album_item_cover_width"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/monet_tv_item_bucket_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/monet_iv_item_cover"
+        android:layout_toEndOf="@id/monet_iv_item_cover"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:id="@+id/monet_tv_item_bucket_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/monet_tv_item_bucket_name"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/monet_iv_item_cover"
+        android:layout_marginLeft="10dp"
+        />
+
+
+</RelativeLayout>

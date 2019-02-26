@@ -9,17 +9,19 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import com.rick.monet.Monet;
 import com.rick.monet.R;
 import com.rick.monet.model.AlbumCollection;
 import com.rick.monet.model.CoverEntity;
+import com.rick.monet.ui.adapter.AlbumsAdapter;
 import com.rick.monet.ui.adapter.GVAdapter;
+import com.rick.monet.ui.widget.AlbumsSpinner;
+import com.rick.monet.ui.widget.BucketNameTextView;
 import com.rick.monet.ui.widget.MonetGridView;
 import com.rick.monet.utils.PermissionUtil;
 import com.rick.monet.utils.ResultCode;
@@ -34,14 +36,19 @@ import java.util.ArrayList;
  */
 public class MonetActivity extends AppCompatActivity implements AlbumCollection.AlbumCallbacks {
 
+    private BucketNameTextView mTvBucketName;
     private AlbumCollection mAlbumCollection = new AlbumCollection();
     private MonetGridView mMonetGridView;
+    private Toolbar mToolbar;
     private GVAdapter mGvAdapter;
     private ArrayList<CoverEntity> mCoverList = new ArrayList<>();
     private String[] permissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    //弹窗管理
+    private AlbumsSpinner mAlbumsSpinner;
+    private AlbumsAdapter mAlbumsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +56,20 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
         setContentView(R.layout.monet_activity_main);
         applyPermission();
         mMonetGridView = findViewById(R.id.monet_gv_main);
-        mMonetGridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+        mTvBucketName = findViewById(R.id.monet_tv_main_bucket_name);
+//        mToolbar = findViewById(R.id.monet_main_toolbar);
+//        mToolbar.setNavigationIcon(R.mipmap.ic_left_white);
+//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+//        mMonetGridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+        mAlbumsSpinner = new AlbumsSpinner(this);
+        mAlbumsAdapter = new AlbumsAdapter(this,null);
+        mAlbumsSpinner.setShowView(mTvBucketName);
+        mAlbumsSpinner.setAdapter(mAlbumsAdapter);
     }
 
     /**
@@ -101,6 +121,8 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
         mGvAdapter = new GVAdapter(MonetActivity.this, mCoverList);
         mMonetGridView.setAdapter(mGvAdapter);
         mMonetGridView.setOnScrollListener(mGvAdapter);
+        mAlbumsAdapter = new AlbumsAdapter(this, cursor);
+        mAlbumsSpinner.setAdapter(mAlbumsAdapter);
     }
 
 

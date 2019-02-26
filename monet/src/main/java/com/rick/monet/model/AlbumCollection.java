@@ -34,6 +34,12 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
 
+    /**
+     * 把相册加载器添加到LoaderManager中
+     * @param id
+     * @param args
+     * @return
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         Context context = mContext.get();
