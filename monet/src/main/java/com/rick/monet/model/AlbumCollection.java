@@ -3,16 +3,18 @@ package com.rick.monet.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.rick.monet.loader.AlbumLoader;
+
 import java.lang.ref.WeakReference;
 
 /**
- * 图片处理器 主要是封装LoaderManager的处理
+ * 对查询图库分类后数据回调管理
+ * 主要是封装LoaderManager的处理
  * Author: Rick
  * Email: zhiyuanfeng@rastar.com
  * Date: 2019/2/15
@@ -38,7 +40,7 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
      * 把相册加载器添加到LoaderManager中
      * @param id
      * @param args
-     * @return
+     * @return AlbumLoader 继承自CursorLoader的内容加载器
      */
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {

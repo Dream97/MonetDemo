@@ -1,28 +1,33 @@
 package com.rick.monet.ui.widget;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.rick.monet.R;
-import com.rick.monet.model.AlbumCollection;
-
+import com.rick.monet.entity.Album;
 /**
- * 管理toolbar上图库的展开
+ * 管理toolbar右上角图库的展开
  * Author: Rick
  * Email: zhiyuanfeng@rastar.com
  * Date: 2019/2/26
  */
 public class AlbumsSpinner {
-    /**PopupWindow最多展示6排**/
+    //PopupWindow最多展示6排
     private int MAX_ABLUM_COUNT = 6;
     private Context mContext ;
     //弹窗
     private ListPopupWindow mListPopupWindow;
-    private View mView;
+    private TextView mView;
     //适配器
     private CursorAdapter mCursorAdapter;
+    //item监听
+    private AdapterView.OnItemSelectedListener mItemSelecterListener;
+
     public AlbumsSpinner(Context context) {
         this.mContext = context;
         mListPopupWindow = new ListPopupWindow(mContext);
@@ -31,13 +36,31 @@ public class AlbumsSpinner {
         mListPopupWindow.setContentWidth((int) (216 * density));
         mListPopupWindow.setHorizontalOffset((int) (16 * density));
         mListPopupWindow.setVerticalOffset((int) (-48 * density));
+        mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setItemSelect(position); //右上角设置相册文字
+                mItemSelecterListener.onItemSelected(parent, view, position, id);
+            }
+        });
+    }
+
+    /**
+     * 点击列表时更新
+     * @param position
+     */
+    public void setItemSelect(int position) {
+        Cursor cursor = mCursorAdapter.getCursor();
+        cursor.moveToPosition(position);
+        Album album = new Album(cursor);
+        mView.setText(album.getmDisplayName());
     }
 
     /**
      * 传入点击后展开PopupWindow的控件
      * @param view 控件
      */
-    public void setShowView(View view) {
+    public void setShowView(TextView view) {
         this.mView = view;
         setPopupAnchorView(view);
         mView.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +93,12 @@ public class AlbumsSpinner {
         mListPopupWindow.setAnchorView(view);
     }
 
-
+    /**
+     * 设置弹窗列表选择监听
+     * @param itemListener
+     */
+    public void setItemListener(AdapterView.OnItemSelectedListener itemListener) {
+        this.mItemSelecterListener = itemListener;
+    }
 
 }

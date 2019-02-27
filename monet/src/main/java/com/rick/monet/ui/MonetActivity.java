@@ -12,10 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListPopupWindow;
 
 import com.rick.monet.Monet;
 import com.rick.monet.R;
+import com.rick.monet.entity.Album;
 import com.rick.monet.model.AlbumCollection;
 import com.rick.monet.model.CoverEntity;
 import com.rick.monet.ui.adapter.AlbumsAdapter;
@@ -34,7 +37,9 @@ import java.util.ArrayList;
  * Email: zhiyuanfeng@rastar.com
  * Date: 2019/2/15
  */
-public class MonetActivity extends AppCompatActivity implements AlbumCollection.AlbumCallbacks {
+public class MonetActivity extends AppCompatActivity implements AlbumCollection.AlbumCallbacks
+    , AdapterView.OnItemSelectedListener
+{
 
     private BucketNameTextView mTvBucketName;
     private AlbumCollection mAlbumCollection = new AlbumCollection();
@@ -70,6 +75,7 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
         mAlbumsAdapter = new AlbumsAdapter(this,null);
         mAlbumsSpinner.setShowView(mTvBucketName);
         mAlbumsSpinner.setAdapter(mAlbumsAdapter);
+        mAlbumsSpinner.setItemListener(this);
     }
 
     /**
@@ -186,5 +192,36 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
         if (requestCode == ResultCode.REQUEST_PERMISSION_SETTING) {
             applyPermission();
         }
+    }
+
+
+    /**
+     * listPopupWindow选中回调监听
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Cursor cursor = mAlbumsAdapter.getCursor();
+        cursor.moveToPosition(position);
+        Album album = new Album(cursor);
+        onAlbumSelect(album);
+    }
+
+    /**
+     * 选择某图库分类时刷新
+     * @param album
+     */
+    public void onAlbumSelect(Album album) {
+        if (album.getCount() == 0) {
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

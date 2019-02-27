@@ -34,6 +34,6 @@ public class AlbumsAdapter extends CursorAdapter {
         TextView tvCount = view.findViewById(R.id.monet_tv_item_bucket_count);
         MonetSpec.getInstance().getmImageEngine().loadImage(context, cursor.getString(cursor.getColumnIndex("_data")), cover);
         tvName.setText(cursor.getString(cursor.getColumnIndex("bucket_display_name")));
-        tvCount.setText(cursor.getString(cursor.getColumnIndex("bucket_id")));
+        tvCount.setText(cursor.getString(cursor.getColumnIndex("count")));
     }
 }

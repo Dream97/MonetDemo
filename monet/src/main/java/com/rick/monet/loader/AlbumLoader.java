@@ -1,16 +1,13 @@
-package com.rick.monet.model;
+package com.rick.monet.loader;
 
 import android.content.Context;
 
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
 /**
- * 加载所有图片到一个cursor中
+ * 加载所有相册分类到一个cursor中
  * Author: Rick
  * Email: zhiyuanfeng@rastar.com
  * Date: 2019/2/15
@@ -42,11 +39,12 @@ public class AlbumLoader extends CursorLoader {
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
     };
-//    private static final String[] SELECTION_ARGS = { //查询条件参数
+    //    private static final String[] SELECTION_ARGS = { //查询条件参数
 ////            "image/jpeg",
 ////            "image/png"
 ////    };
-private static final String BUCKET_ORDER_BY = "datetaken DESC";
+    private static final String BUCKET_ORDER_BY = "datetaken DESC";
+
     private AlbumLoader(Context context, String selection, String[] selectionArgs) {
         super(context, QUERY_URI, PROJECTION, selection, selectionArgs, BUCKET_ORDER_BY);
     }

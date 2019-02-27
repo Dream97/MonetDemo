@@ -4,6 +4,7 @@ import com.rick.monet.Monet;
 import com.rick.monet.utils.ImageEngine;
 
 /**
+ * 配置信息
  * Author: Rick
  * Email: zhiyuanfeng@rastar.com
  * Date: 2019/2/19
