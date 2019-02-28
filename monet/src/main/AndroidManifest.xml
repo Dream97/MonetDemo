@@ -2,9 +2,10 @@
     package="com.rick.monet" >
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <application
-        >
+    <application>
         <activity android:name=".ui.MonetActivity"
+            android:theme="@style/MonetTheme"/>
+        <activity android:name=".ui.activity.PreviewActivity"
             android:theme="@style/MonetTheme"/>
     </application>
 </manifest>

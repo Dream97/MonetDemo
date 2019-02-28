@@ -2,9 +2,14 @@ package com.rick.monet.loader;
 
 import android.content.Context;
 
+import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
+
+import com.rick.monet.entity.Album;
 
 /**
  * 加载所有相册分类到一个cursor中
@@ -59,6 +64,30 @@ public class AlbumLoader extends CursorLoader {
         String selection = SELECTION;
         String[] selectionArgs = SELECTION_ARGS;
         return new AlbumLoader(context, selection, selectionArgs);
+    }
+
+    /**
+     * 合并所有分类到一个All类中
+     * @return Cursor
+     */
+    @Override
+    public Cursor loadInBackground() {
+        Cursor albums = super.loadInBackground();
+        MatrixCursor allAlbum = new MatrixCursor(COLUMNS);
+        int totalCount = 0;
+        String allAlbumCoverPath = "";
+        if (albums != null) {
+            while (albums.moveToNext()) {
+                totalCount += albums.getInt(albums.getColumnIndex(COLUMN_COUNT));
+            }
+            if (albums.moveToFirst()) {
+                allAlbumCoverPath = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.DATA));
+            }
+        }
+        allAlbum.addRow(new String[]{"-1", "-1", "All", allAlbumCoverPath,
+                String.valueOf(totalCount)});
+
+        return new MergeCursor(new Cursor[]{allAlbum, albums});
     }
 
 }

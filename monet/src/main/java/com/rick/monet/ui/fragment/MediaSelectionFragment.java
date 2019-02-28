@@ -1,6 +1,7 @@
 package com.rick.monet.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -24,13 +25,13 @@ import com.rick.monet.ui.widget.MediaItemDecoration;
  * Email: zhiyuanfeng@rastar.com
  * Date: 2019/2/25
  */
-public class MediaSelectionFragment extends Fragment implements AlbumMediaCollection.AlbumMediaCallbacks {
+public class MediaSelectionFragment extends Fragment implements AlbumMediaCollection.AlbumMediaCallbacks , AlbumMediaAdapter.MediaItemListener {
     private static MediaSelectionFragment mInstance;
     private RecyclerView mRvCover;
     private static String ALBUM_KEY = "album";
     private AlbumMediaCollection mAlbumMediaCollection = new AlbumMediaCollection();
     private AlbumMediaAdapter mAlbumMediaAdapter;
-
+    private AlbumMediaAdapter.MediaItemListener mMediaItemListener;
     public static MediaSelectionFragment getInstance(Album album) {
         mInstance = new MediaSelectionFragment();
         Bundle bundle = new Bundle();
@@ -65,11 +66,13 @@ public class MediaSelectionFragment extends Fragment implements AlbumMediaCollec
         mRvCover.setLayoutManager(new GridLayoutManager(getContext(), 3));
         mAlbumMediaAdapter = new AlbumMediaAdapter(getContext());
         mRvCover.setAdapter(mAlbumMediaAdapter);
+        mAlbumMediaAdapter.registerMediaItemListener(this);
     }
 
     @Override
     public void onAlbumMediaLoad(Cursor cursor) {
         mAlbumMediaAdapter = new AlbumMediaAdapter(getContext(), cursor);
+        mAlbumMediaAdapter.registerMediaItemListener(this);
         mRvCover.setAdapter(mAlbumMediaAdapter);
     }
 
@@ -82,5 +85,20 @@ public class MediaSelectionFragment extends Fragment implements AlbumMediaCollec
     public void onDestroy() {
         super.onDestroy();
         mAlbumMediaCollection.onDestroy();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof AlbumMediaAdapter.MediaItemListener) {
+            mMediaItemListener = (AlbumMediaAdapter.MediaItemListener) context;
+        }
+    }
+
+    @Override
+    public void onMediaClick(Cursor cursor) {
+        if (mMediaItemListener != null) {
+            mMediaItemListener.onMediaClick(cursor);
+        }
     }
 }

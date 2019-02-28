@@ -41,6 +41,7 @@ public class AlbumsSpinner {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 setItemSelect(position); //右上角设置相册文字
                 mItemSelecterListener.onItemSelected(parent, view, position, id);
+                mListPopupWindow.dismiss();
             }
         });
     }

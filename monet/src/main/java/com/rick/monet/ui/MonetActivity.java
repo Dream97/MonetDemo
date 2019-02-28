@@ -14,13 +14,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 
 import com.rick.monet.Monet;
 import com.rick.monet.R;
 import com.rick.monet.entity.Album;
+import com.rick.monet.entity.MediaItem;
 import com.rick.monet.model.AlbumCollection;
 import com.rick.monet.model.CoverEntity;
+import com.rick.monet.ui.activity.PreviewActivity;
+import com.rick.monet.ui.adapter.AlbumMediaAdapter;
 import com.rick.monet.ui.adapter.AlbumsAdapter;
 import com.rick.monet.ui.adapter.GVAdapter;
 import com.rick.monet.ui.fragment.MediaSelectionFragment;
@@ -39,14 +43,14 @@ import java.util.ArrayList;
  * Date: 2019/2/15
  */
 public class MonetActivity extends AppCompatActivity implements AlbumCollection.AlbumCallbacks
-    , AdapterView.OnItemSelectedListener
-{
+    , AdapterView.OnItemSelectedListener, View.OnClickListener , AlbumMediaAdapter.MediaItemListener {
 
     private BucketNameTextView mTvBucketName;
     private AlbumCollection mAlbumCollection = new AlbumCollection();
     private MonetGridView mMonetGridView;
     private Toolbar mToolbar;
     private GVAdapter mGvAdapter;
+    private ImageView mIvClose;
     private ArrayList<CoverEntity> mCoverList = new ArrayList<>();
     private String[] permissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -65,6 +69,8 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
         applyPermission();
         mMonetGridView = findViewById(R.id.monet_gv_main);
         mTvBucketName = findViewById(R.id.monet_tv_main_bucket_name);
+        mIvClose = findViewById(R.id.monet_iv_main_back);
+        mIvClose.setOnClickListener(this);
 //        mToolbar = findViewById(R.id.monet_main_toolbar);
 //        mToolbar.setNavigationIcon(R.mipmap.ic_left_white);
 //        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -77,8 +83,8 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
         mAlbumsSpinner = new AlbumsSpinner(this);
         mAlbumsAdapter = new AlbumsAdapter(this,null);
         mAlbumsSpinner.setShowView(mTvBucketName);
-        mAlbumsSpinner.setAdapter(mAlbumsAdapter);
         mAlbumsSpinner.setItemListener(this);
+        mAlbumsSpinner.setAdapter(mAlbumsAdapter);
 
         mContainer = findViewById(R.id.monet_activity_fl_media);
     }
@@ -108,32 +114,22 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
     }
 
 
+    /**
+     * Loader查询后数据回调
+     * @param cursor 浮标
+     */
     @Override
     public void onAlbumLoad(Cursor cursor) {
-        Log.d("Cursor内容", cursor.toString() + "\n------------------------------------------------");
-        StringBuilder builder = new StringBuilder();
+//        mMonetGridView.setNumColumns(4);
+//        mGvAdapter = new GVAdapter(MonetActivity.this, mCoverList);
+//        mMonetGridView.setAdapter(mGvAdapter);
+//        mMonetGridView.setOnScrollListener(mGvAdapter);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                CoverEntity coverEntity = new CoverEntity();
-                builder.append("  " + cursor.getString(cursor.getColumnIndex("bucket_id")));
-                builder.append("  " + cursor.getString(cursor.getColumnIndex("bucket_display_name")));
-                builder.append("  " + cursor.getString(cursor.getColumnIndex("_data")));
-                builder.append("  " + cursor.getString(cursor.getColumnIndex("count")) + "\n");
-                coverEntity.setBucket_id(cursor.getString(cursor.getColumnIndex("bucket_id")));
-                coverEntity.setBucket_display_name(cursor.getString(cursor.getColumnIndex("bucket_display_name")));
-                coverEntity.set_data(cursor.getString(cursor.getColumnIndex("_data")));
-                coverEntity.setCount(cursor.getString(cursor.getColumnIndex("count")));
-                mCoverList.add(coverEntity);
-            } while (cursor.moveToNext());
-        }
-        Log.d("Cursor", builder.toString());
-        mMonetGridView.setNumColumns(4);
-        mGvAdapter = new GVAdapter(MonetActivity.this, mCoverList);
-        mMonetGridView.setAdapter(mGvAdapter);
-        mMonetGridView.setOnScrollListener(mGvAdapter);
         mAlbumsAdapter = new AlbumsAdapter(this, cursor);
         mAlbumsSpinner.setAdapter(mAlbumsAdapter);
+
+        cursor.moveToFirst();
+        onAlbumSelect(new Album(cursor));
     }
 
 
@@ -232,5 +228,21 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.monet_iv_main_back) {
+            finish();
+        }
+    }
+
+    @Override
+    public void onMediaClick(Cursor cursor) {
+        Intent intent = new Intent(this, PreviewActivity.class);
+        MediaItem item = new MediaItem(cursor);
+        intent.putExtra("media",item);
+        startActivityForResult(intent, 1);
     }
 }

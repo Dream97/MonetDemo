@@ -24,6 +24,7 @@ public class AlbumMediaAdapter extends RecyclerView.Adapter<AlbumMediaAdapter.Me
     private Context mContext;
     private Cursor mCursor;
     private ArrayList<String> mList = new ArrayList<>();
+    private MediaItemListener mMediaItemListener;
     public AlbumMediaAdapter(Context context) {
         this.mContext = context;
     }
@@ -50,8 +51,18 @@ public class AlbumMediaAdapter extends RecyclerView.Adapter<AlbumMediaAdapter.Me
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MediaHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MediaHolder holder, final int position) {
         MonetSpec.getInstance().getmImageEngine().loadImage(mContext, mList.get(position), holder.mIvCover);
+        holder.mIvCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCursor != null) {
+                    mCursor.moveToFirst();
+                    mCursor.moveToPosition(position);
+                    mMediaItemListener.onMediaClick(mCursor);
+                }
+            }
+        });
     }
 
     class MediaHolder extends RecyclerView.ViewHolder{
@@ -60,5 +71,20 @@ public class AlbumMediaAdapter extends RecyclerView.Adapter<AlbumMediaAdapter.Me
             super(itemView);
             mIvCover = itemView.findViewById(R.id.monet_iv_item_grid_cover);
         }
+    }
+
+    public void registerMediaItemListener(MediaItemListener mediaItemListener) {
+        this.mMediaItemListener = mediaItemListener;
+    }
+
+    /**
+     * 定义点击事件回调接口
+     */
+    public interface MediaItemListener {
+        /**
+         * 点击图片时调用
+         * @param cursor 浮标数据
+         */
+        void onMediaClick(Cursor cursor);
     }
 }
