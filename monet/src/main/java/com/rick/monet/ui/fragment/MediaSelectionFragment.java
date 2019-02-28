@@ -2,6 +2,7 @@ package com.rick.monet.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import com.rick.monet.R;
 import com.rick.monet.entity.Album;
 import com.rick.monet.model.AlbumMediaCollection;
 import com.rick.monet.ui.adapter.AlbumMediaAdapter;
+import com.rick.monet.ui.widget.MediaItemDecoration;
 
 /**
  * 展示所选图库页
@@ -26,22 +28,17 @@ public class MediaSelectionFragment extends Fragment implements AlbumMediaCollec
     private static MediaSelectionFragment mInstance;
     private RecyclerView mRvCover;
     private static String ALBUM_KEY = "album";
-    private AlbumMediaCollection mAlbumMediaCollection;
-    private AlbumMediaAdapter albumMediaAdapter;
+    private AlbumMediaCollection mAlbumMediaCollection = new AlbumMediaCollection();
+    private AlbumMediaAdapter mAlbumMediaAdapter;
 
-    public MediaSelectionFragment getInstance(Album album) {
-        if (mInstance == null) {
-            synchronized (MediaSelectionFragment.class) {
-                if (mInstance == null) {
-                    mInstance = new MediaSelectionFragment();
-                }
-            }
-        }
+    public static MediaSelectionFragment getInstance(Album album) {
+        mInstance = new MediaSelectionFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ALBUM_KEY, album);
         mInstance.setArguments(bundle);
         return mInstance;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +49,9 @@ public class MediaSelectionFragment extends Fragment implements AlbumMediaCollec
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRvCover = view.findViewById(R.id.monet_rv_fragment_cover);
+        mRvCover.setHasFixedSize(true);
+        int spacing = getResources().getDimensionPixelSize(R.dimen.monet_media_grid_spacing);
+//        mRvCover.addItemDecoration(new MediaItemDecoration(spacing));
         mAlbumMediaCollection.onCreate(getActivity(), this);
         Album album = getArguments().getParcelable(ALBUM_KEY);
         mAlbumMediaCollection.load(album);
@@ -63,18 +63,24 @@ public class MediaSelectionFragment extends Fragment implements AlbumMediaCollec
      */
     private void initView() {
         mRvCover.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        albumMediaAdapter = new AlbumMediaAdapter(getContext());
-        mRvCover.setAdapter(albumMediaAdapter);
+        mAlbumMediaAdapter = new AlbumMediaAdapter(getContext());
+        mRvCover.setAdapter(mAlbumMediaAdapter);
     }
 
     @Override
     public void onAlbumMediaLoad(Cursor cursor) {
-        albumMediaAdapter = new AlbumMediaAdapter(getContext(), cursor);
-        mRvCover.setAdapter(albumMediaAdapter);
+        mAlbumMediaAdapter = new AlbumMediaAdapter(getContext(), cursor);
+        mRvCover.setAdapter(mAlbumMediaAdapter);
     }
 
     @Override
     public void onAlbumMediaReset() {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mAlbumMediaCollection.onDestroy();
     }
 }

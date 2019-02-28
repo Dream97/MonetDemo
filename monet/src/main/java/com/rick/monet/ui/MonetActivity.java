@@ -23,6 +23,7 @@ import com.rick.monet.model.AlbumCollection;
 import com.rick.monet.model.CoverEntity;
 import com.rick.monet.ui.adapter.AlbumsAdapter;
 import com.rick.monet.ui.adapter.GVAdapter;
+import com.rick.monet.ui.fragment.MediaSelectionFragment;
 import com.rick.monet.ui.widget.AlbumsSpinner;
 import com.rick.monet.ui.widget.BucketNameTextView;
 import com.rick.monet.ui.widget.MonetGridView;
@@ -54,6 +55,8 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
     //弹窗管理
     private AlbumsSpinner mAlbumsSpinner;
     private AlbumsAdapter mAlbumsAdapter;
+    //中间展示内容frameLayout
+    private View mContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,8 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
         mAlbumsSpinner.setShowView(mTvBucketName);
         mAlbumsSpinner.setAdapter(mAlbumsAdapter);
         mAlbumsSpinner.setItemListener(this);
+
+        mContainer = findViewById(R.id.monet_activity_fl_media);
     }
 
     /**
@@ -215,8 +220,12 @@ public class MonetActivity extends AppCompatActivity implements AlbumCollection.
      * @param album
      */
     public void onAlbumSelect(Album album) {
-        if (album.getCount() == 0) {
-
+        if (album != null) {
+            MediaSelectionFragment fragment = MediaSelectionFragment.getInstance(album);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.monet_activity_fl_media,fragment, MediaSelectionFragment.class.getSimpleName())
+                    .commitAllowingStateLoss();
         }
     }
 

@@ -39,6 +39,7 @@
     </RelativeLayout>
 
     <FrameLayout
+        android:id="@+id/monet_activity_fl_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <com.rick.monet.ui.widget.MonetGridView

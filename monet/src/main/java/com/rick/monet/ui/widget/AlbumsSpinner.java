@@ -53,7 +53,7 @@ public class AlbumsSpinner {
         Cursor cursor = mCursorAdapter.getCursor();
         cursor.moveToPosition(position);
         Album album = new Album(cursor);
-        mView.setText(album.getmDisplayName());
+        mView.setText(album.getDisplayName());
     }
 
     /**

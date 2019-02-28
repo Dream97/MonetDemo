@@ -77,4 +77,16 @@ public class AlbumMediaCollection implements LoaderManager.LoaderCallbacks<Curso
         void onAlbumMediaLoad(Cursor cursor);
         void onAlbumMediaReset();
     }
+
+    /**
+     * 在页面销毁的时候需要destroy LoaderManager
+     * 否则捕获数据为空
+     */
+    public void onDestroy() {
+        if (mLoaderManager != null) {
+            mLoaderManager.destroyLoader(LOADER_ID);
+        }
+        mMediaCallbacks = null;
+    }
+
 }
